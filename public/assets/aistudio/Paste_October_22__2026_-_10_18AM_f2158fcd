@@ -1,0 +1,1416 @@
+NAMA APLIKASI
+
+BPJS Kesehatan Madiun Information Center — Portal Informasi, Layanan, dan Edukasi Peserta JKN
+
+KONSEP APLIKASI
+
+Bangun sebuah website informasi resmi bergaya institusi pemerintah modern untuk Kantor BPJS Kesehatan Madiun. Website berfungsi sebagai pusat informasi terpadu bagi peserta Jaminan Kesehatan Nasional (JKN), calon peserta, pemberi kerja, fasilitas kesehatan, mitra, dan masyarakat umum.
+
+Gunakan gambar referensi yang dilampirkan sebagai acuan tata letak dan karakter visual, terutama pada bagian header, navigasi utama, hero banner dengan carousel, ticker informasi, serta bagian berita terbaru. Adaptasikan desain tersebut menjadi identitas visual portal BPJS Kesehatan Madiun, bukan menyalin identitas Kementerian Keuangan.
+
+Website harus terlihat seperti portal institusi pemerintah yang dirancang oleh tim UI/UX profesional: rapi, kredibel, informatif, mudah digunakan, dan tidak terkesan sebagai template website AI.
+
+Prioritaskan kebutuhan masyarakat dalam memperoleh informasi yang benar, memahami prosedur layanan, menemukan kanal pengaduan, mengetahui persyaratan administrasi, dan mengakses informasi layanan BPJS Kesehatan secara cepat.
+
+Aplikasi harus dapat diimplementasikan menggunakan Google Apps Script sebagai backend, Google Sheets sebagai database, dan Google Drive sebagai penyimpanan dokumen serta gambar. Gunakan HTML Service untuk menyajikan frontend.
+
+Buat aplikasi versi profesional yang tetap ringan, mudah dikelola oleh administrator kantor, dan dapat dikembangkan secara bertahap tanpa memerlukan server berbayar tambahan.
+
+PENTING: Website ini merupakan portal informasi kantor. Jangan mengklaim bahwa website adalah situs resmi nasional BPJS Kesehatan jika belum memiliki otorisasi. Jangan mengarang alamat kantor, nomor telepon, jam operasional, nama pejabat, kontak pengaduan, regulasi, maupun kebijakan pelayanan. Seluruh data faktual kantor harus dapat dikonfigurasi oleh administrator dan diberi status verifikasi. Tampilkan dengan jelas tautan ke kanal resmi BPJS Kesehatan yang telah diverifikasi.
+
+TARGET PENGGUNA
+
+1. Peserta JKN yang ingin memperoleh informasi administrasi dan pelayanan.
+2. Masyarakat yang ingin mendaftar atau memahami kepesertaan JKN.
+3. Peserta Penerima Bantuan Iuran (PBI) yang membutuhkan informasi status dan prosedur terkait.
+4. Peserta Pekerja Penerima Upah (PPU), peserta mandiri, dan peserta bukan pekerja.
+5. HRD, badan usaha, dan pemberi kerja yang membutuhkan informasi administrasi kepesertaan.
+6. Fasilitas kesehatan dan mitra pelayanan yang membutuhkan informasi terkait koordinasi layanan.
+7. Petugas kantor yang mengelola informasi, berita, agenda, dokumen, dan pengumuman.
+8. Pimpinan atau pejabat yang memerlukan laporan statistik pengelolaan informasi website.
+
+TEKNOLOGI YANG DIGUNAKAN
+
+Gunakan teknologi berikut:
+
+1. Frontend: HTML5, CSS3 modern, JavaScript ES6+, dan Bootstrap 5 melalui CDN.
+2. Backend: Google Apps Script menggunakan V8 Runtime.
+3. Database: Google Sheets dengan struktur tabel yang terpisah berdasarkan modul.
+4. Penyimpanan gambar dan dokumen: Google Drive.
+5. Rendering halaman: Google Apps Script HTML Service menggunakan `doGet()`, `HtmlService.createTemplateFromFile()` jika diperlukan, dan `include()` untuk memisahkan komponen.
+6. Komunikasi frontend-backend: `google.script.run` dengan success handler dan failure handler. Gunakan `fetch()` hanya untuk endpoint HTTP yang memang diperlukan dan tersedia.
+7. Grafik dashboard: Chart.js melalui CDN.
+8. Ikon: Bootstrap Icons atau Lucide Icons melalui CDN.
+9. Tanggal dan waktu: zona waktu Asia/Jakarta.
+10. Format tanggal: Bahasa Indonesia.
+11. Arsitektur: frontend dan backend modular dalam satu proyek Google Apps Script, bukan memaksakan seluruh logika ke satu fungsi besar.
+12. Autentikasi administrator: Google Account dan pemeriksaan otorisasi yang benar-benar dijalankan di sisi server.
+
+Susun proyek agar mudah dipelihara. Buat daftar nama file proyek Apps Script, misalnya:
+
+- Code.gs
+- Config.gs
+- Database.gs
+- Auth.gs
+- PublicService.gs
+- AdminService.gs
+- UploadService.gs
+- Validation.gs
+- Index.html
+- Styles.html
+- Scripts.html
+- Components.html
+- Admin.html
+- AdminStyles.html
+- AdminScripts.html
+
+Jika platform pembuat kode mengharuskan output dalam satu file HTML atau satu berkas utama, prioritaskan implementasi yang kompatibel dengan Google Apps Script. Namun, jika menghasilkan proyek Apps Script lengkap, pisahkan file `.gs` dan `.html` sesuai fungsi di atas.
+
+DESAIN & UI STYLE
+
+Buat tampilan yang mengadaptasi referensi gambar dengan karakter visual institusi pemerintah Indonesia.
+
+A. Identitas Visual
+
+Gunakan palet warna utama:
+
+- Biru tua: `#064A85`
+- Biru BPJS: `#0877C9`
+- Biru muda: `#EAF5FF`
+- Putih: `#FFFFFF`
+- Abu-abu latar: `#F5F7FA`
+- Abu-abu teks: `#343A40`
+- Hijau status: `#198754`
+- Kuning informasi: `#FFF4D6`
+- Merah peringatan: `#C83B45`
+
+Gunakan warna secara konsisten, dengan kontras teks yang memenuhi prinsip aksesibilitas WCAG AA sejauh memungkinkan.
+
+B. Header Utama
+
+Buat header horizontal berwarna putih, bersih, dan profesional.
+
+Elemen header:
+
+1. Logo BPJS Kesehatan yang resmi dan digunakan sesuai izin serta pedoman identitas yang berlaku.
+2. Identitas teks “BPJS Kesehatan Madiun” atau nama kantor yang telah dikonfirmasi.
+3. Menu navigasi utama:
+   - Beranda
+   - Profil Kantor
+   - Informasi JKN
+   - Layanan Peserta
+   - Informasi Publik
+   - Berita dan Kegiatan
+   - FAQ
+   - Kontak
+4. Ikon pencarian.
+5. Tombol aksesibilitas.
+6. Tautan kanal resmi BPJS Kesehatan.
+7. Tombol menu hamburger untuk perangkat mobile.
+
+Header tetap mudah diakses saat halaman digulir, dengan efek sticky yang ringan.
+
+C. Hero Banner Carousel
+
+Buat area hero besar dengan rasio visual lebar sekitar 16:6 pada desktop.
+
+Tampilkan carousel yang dapat dikelola administrator. Setiap slide memuat:
+
+- Gambar banner.
+- Label kategori.
+- Judul utama.
+- Deskripsi singkat.
+- Tombol aksi utama.
+- Tautan tujuan.
+- Tanggal mulai dan berakhir penayangan.
+- Status publikasi.
+
+Contoh konten awal berupa data demonstrasi:
+
+- “Kenali Layanan JKN Lebih Mudah”
+- “Pahami Administrasi Kepesertaan”
+- “Informasi Pelayanan BPJS Kesehatan”
+- “Panduan Menggunakan Aplikasi Mobile JKN”
+
+Teks demonstrasi tidak boleh disajikan sebagai pengumuman resmi yang faktual sebelum diverifikasi administrator.
+
+Fitur carousel:
+
+- Autoplay dengan interval yang wajar.
+- Tombol navigasi kiri dan kanan.
+- Indikator slide.
+- Pause saat pointer berada di atas carousel.
+- Dukungan keyboard.
+- Menghormati preferensi `prefers-reduced-motion`.
+- Gambar responsif dengan rasio konsisten.
+- Overlay gelap secukupnya agar teks terbaca.
+
+D. Bar Informasi Berjalan
+
+Tepat di bawah hero, buat bar informasi seperti pada referensi gambar.
+
+Komponen:
+
+- Label “INFORMASI”.
+- Judul pengumuman berjalan atau berganti secara otomatis.
+- Indikator prioritas.
+- Tombol “Lihat Detail”.
+- Tombol pause jika animasi berjalan.
+
+Pada perangkat mobile, gunakan daftar pengumuman horizontal yang dapat digeser atau kartu informasi statis. Jangan membuat teks bergerak terlalu cepat.
+
+Hanya tampilkan pengumuman berstatus published, terverifikasi, dan masih berada dalam periode publikasi.
+
+E. Beranda
+
+Susun halaman utama dengan urutan:
+
+1. Header utama.
+2. Hero carousel.
+3. Bar pengumuman penting.
+4. Menu layanan cepat.
+5. Informasi terbaru.
+6. Berita dan kegiatan.
+7. Panduan administrasi JKN.
+8. FAQ populer.
+9. Agenda kegiatan kantor.
+10. Kanal layanan dan pengaduan.
+11. Informasi lokasi kantor.
+12. Tautan situs dan aplikasi resmi.
+13. Footer institusi.
+
+F. Menu Layanan Cepat
+
+Buat kartu layanan yang menarik dengan ikon konsisten, judul singkat, dan deskripsi satu baris.
+
+Contoh kategori:
+
+- Informasi Kepesertaan
+- Pendaftaran JKN
+- Perubahan Data Peserta
+- Informasi Iuran
+- Panduan Mobile JKN
+- Informasi PBI
+- Layanan Pemberi Kerja
+- Informasi Fasilitas Kesehatan
+- Pengaduan dan Aspirasi
+- Unduh Dokumen
+- Tanya Jawab
+- Cari Informasi
+
+Setiap kartu membuka halaman informasi internal atau tautan resmi yang telah diverifikasi.
+
+Jangan membuat formulir yang meminta nomor kartu JKN, NIK, kata sandi, OTP, data medis, atau data pribadi sensitif apabila tidak benar-benar diperlukan dan tidak memiliki mekanisme perlindungan data yang sesuai.
+
+G. Berita Terbaru
+
+Buat bagian berita menggunakan layout grid responsif.
+
+Setiap kartu berita berisi:
+
+- Foto thumbnail.
+- Kategori.
+- Judul.
+- Ringkasan.
+- Tanggal publikasi.
+- Penulis atau unit penerbit jika tersedia.
+- Tombol “Baca Selengkapnya”.
+
+Sediakan halaman detail berita dengan gambar utama, isi lengkap, lampiran, tanggal publikasi, sumber, dan tautan berbagi.
+
+H. Informasi Tambahan
+
+Buat desain yang konsisten untuk:
+
+- Halaman profil kantor.
+- Halaman informasi kepesertaan.
+- Halaman informasi layanan.
+- Halaman berita.
+- Halaman pengumuman.
+- Halaman dokumen.
+- Halaman FAQ.
+- Halaman kontak.
+- Halaman pencarian.
+- Halaman detail artikel.
+- Halaman tidak ditemukan.
+
+I. Footer
+
+Footer harus berisi:
+
+- Identitas kantor.
+- Alamat yang sudah diverifikasi.
+- Nomor kontak yang sudah diverifikasi.
+- Jam layanan yang sudah diverifikasi.
+- Tautan kanal resmi.
+- Tautan kebijakan privasi.
+- Tautan aksesibilitas.
+- Hak cipta.
+- Tahun otomatis berdasarkan waktu Asia/Jakarta.
+
+Jika informasi kantor belum diverifikasi, tampilkan placeholder administratif hanya di dashboard dan jangan menampilkan informasi rekaan di halaman publik.
+
+STRUKTUR HALAMAN
+
+1\. BERANDA
+
+Halaman utama portal dengan hero carousel, pengumuman, layanan cepat, berita, FAQ, agenda, serta kanal layanan resmi.
+
+2\. PROFIL KANTOR
+
+Subhalaman:
+
+- Tentang kantor.
+- Wilayah kerja.
+- Struktur organisasi.
+- Informasi unit pelayanan.
+- Informasi pejabat atau penanggung jawab apabila disetujui untuk dipublikasikan.
+- Lokasi dan petunjuk menuju kantor.
+- Jam layanan.
+- Maklumat pelayanan jika tersedia.
+- Standar pelayanan yang telah diverifikasi.
+
+Semua informasi dikelola melalui dashboard admin.
+
+3\. INFORMASI JKN
+
+Sediakan kategori informasi:
+
+- Jenis kepesertaan.
+- Pendaftaran peserta.
+- Perubahan data.
+- Perpindahan segmen kepesertaan.
+- Informasi iuran.
+- Informasi status kepesertaan.
+- Informasi PBI.
+- Hak dan kewajiban peserta.
+- Panduan administrasi.
+- Informasi layanan digital.
+- Informasi pelayanan kesehatan.
+- Regulasi dan kebijakan JKN.
+
+Setiap artikel mempunyai sumber resmi, tanggal pembaruan, tanggal verifikasi, status verifikasi, dan catatan bahwa ketentuan dapat berubah sesuai kebijakan yang berlaku.
+
+4\. LAYANAN PESERTA
+
+Buat halaman direktori layanan berdasarkan kategori pengguna.
+
+Setiap layanan mempunyai:
+
+- Nama layanan.
+- Deskripsi.
+- Tujuan layanan.
+- Persyaratan.
+- Dokumen yang dibutuhkan.
+- Prosedur langkah demi langkah.
+- Kanal pelayanan yang tersedia.
+- Estimasi waktu hanya jika memiliki dasar resmi.
+- Biaya atau keterangan gratis hanya jika telah diverifikasi.
+- Tautan resmi.
+- Sumber referensi.
+- Tanggal pembaruan.
+- FAQ terkait.
+
+Sediakan filter berdasarkan jenis layanan dan kelompok pengguna.
+
+5\. INFORMASI PUBLIK
+
+Sediakan:
+
+- Dokumen informasi publik.
+- Kebijakan dan regulasi.
+- Publikasi resmi.
+- Maklumat pelayanan.
+- Dokumen yang boleh diunduh.
+- Kategori dokumen.
+- Tanggal dokumen.
+- Nomor dokumen jika tersedia.
+- Unit penerbit.
+- Sumber dokumen.
+- Ukuran file.
+- Tombol lihat atau unduh.
+
+Hanya publikasikan dokumen yang memang diperbolehkan untuk dibagikan kepada masyarakat.
+
+6\. BERITA DAN KEGIATAN
+
+Sediakan:
+
+- Daftar berita.
+- Detail berita.
+- Kategori berita.
+- Galeri foto.
+- Pencarian berita.
+- Filter berdasarkan tanggal dan kategori.
+- Berita unggulan.
+- Arsip berita.
+
+7\. PENGUMUMAN
+
+Sediakan daftar pengumuman yang dapat difilter berdasarkan kategori, periode, dan tingkat prioritas.
+
+Tampilkan tanggal mulai dan berakhir publikasi. Pengumuman kedaluwarsa otomatis tidak ditampilkan pada halaman publik, tetapi tetap tersedia di arsip admin.
+
+8\. FAQ
+
+Sediakan pertanyaan yang dikelompokkan berdasarkan kategori.
+
+Fitur:
+
+- Pencarian pertanyaan.
+- Accordion.
+- FAQ populer.
+- Tautan menuju artikel terkait.
+- Tanggal pembaruan.
+- Sumber resmi untuk jawaban yang berkaitan dengan kebijakan JKN.
+
+9\. KONTAK DAN PENGADUAN
+
+Sediakan:
+
+- Informasi kontak kantor yang telah diverifikasi.
+- Alamat dan peta lokasi setelah alamat resmi dikonfirmasi.
+- Jam pelayanan.
+- Kanal pengaduan resmi.
+- Tautan layanan pengaduan yang terverifikasi.
+- Informasi tata cara menyampaikan pengaduan.
+- Informasi tindak lanjut pengaduan.
+
+Jika tersedia formulir aspirasi internal, formulir harus mempunyai validasi, persetujuan privasi, nomor tiket, dan mekanisme tindak lanjut yang jelas. Jangan mengklaim bahwa pengaduan telah masuk ke sistem nasional jika hanya disimpan dalam Google Sheets.
+
+10\. PUSAT UNDUHAN
+
+Sediakan dokumen berdasarkan kategori:
+
+- Panduan peserta.
+- Panduan administrasi.
+- Formulir publik yang resmi.
+- Regulasi.
+- Brosur edukasi.
+- Materi sosialisasi.
+- Dokumen informasi publik.
+
+Dukung pencarian, filter, pratinjau PDF jika memungkinkan, dan unduhan.
+
+11\. PENCARIAN INFORMASI
+
+Buat halaman pencarian global yang mencari:
+
+- Judul berita.
+- Isi artikel.
+- Pengumuman.
+- FAQ.
+- Dokumen.
+- Panduan layanan.
+
+Tampilkan hasil dengan judul, kategori, ringkasan, tanggal, dan tautan detail. Berikan saran ketika tidak ada hasil.
+
+12\. DASHBOARD ADMINISTRATOR
+
+Sediakan dashboard terpisah untuk pengelolaan website.
+
+Dashboard tidak boleh dapat diakses atau dimodifikasi oleh pengunjung biasa.
+
+FITUR WAJIB
+
+A. Sistem Pengelolaan Konten (CMS)
+
+Implementasikan CRUD lengkap untuk:
+
+- Berita.
+- Pengumuman.
+- Banner.
+- Informasi layanan.
+- Artikel edukasi.
+- FAQ.
+- Dokumen.
+- Agenda kegiatan.
+- Galeri foto.
+- Profil kantor.
+- Tautan eksternal.
+- Kontak dan informasi footer.
+
+CRUD harus meliputi:
+
+- Tambah.
+- Lihat.
+- Edit.
+- Hapus dengan konfirmasi.
+- Pencarian.
+- Filter.
+- Pagination.
+- Pengaturan status.
+- Pratinjau sebelum publikasi.
+
+Gunakan soft delete untuk data yang perlu dipertahankan dalam riwayat pengelolaan. Jangan menghapus file Google Drive secara permanen tanpa konfirmasi dan pemeriksaan referensi file.
+
+B. Sistem Publikasi Konten
+
+Setiap konten memiliki status:
+
+- Draft.
+- Menunggu verifikasi.
+- Disetujui.
+- Published.
+- Archived.
+- Rejected.
+
+Tambahkan fitur:
+
+- Jadwal publikasi.
+- Tanggal kedaluwarsa.
+- Riwayat revisi.
+- Catatan perubahan.
+- Nama pengguna yang mengubah konten.
+- Waktu perubahan.
+- Status verifikasi sumber.
+
+Konten yang menyangkut regulasi, hak peserta, iuran, prosedur layanan, dan pengaduan harus melewati proses verifikasi sebelum diterbitkan.
+
+C. Manajemen Banner
+
+Admin dapat:
+
+- Mengunggah gambar.
+- Mengisi judul dan deskripsi.
+- Menentukan kategori.
+- Mengatur CTA.
+- Mengatur tautan tujuan.
+- Mengatur urutan slide.
+- Mengaktifkan atau menonaktifkan banner.
+- Menentukan jadwal tayang.
+- Melihat pratinjau desktop dan mobile.
+
+Validasi format gambar, ukuran file, dan aksesibilitas teks alternatif.
+
+D. Manajemen Berita
+
+Admin dapat menulis berita menggunakan editor konten yang mendukung:
+
+- Judul.
+- Slug unik.
+- Ringkasan.
+- Isi berita.
+- Gambar utama.
+- Galeri.
+- Kategori.
+- Tag.
+- Penulis.
+- Tanggal publikasi.
+- Sumber.
+- Status verifikasi.
+- Status publikasi.
+
+Sediakan penyimpanan draft dan pratinjau sebelum diterbitkan.
+
+E. Manajemen Dokumen
+
+Fitur:
+
+- Upload PDF dan format dokumen yang diizinkan.
+- Kategori.
+- Judul dokumen.
+- Deskripsi.
+- Sumber.
+- Nomor dokumen jika ada.
+- Tanggal dokumen.
+- Tanggal verifikasi.
+- Versi.
+- Status publikasi.
+- URL Drive.
+- Unduhan.
+- Arsip dokumen lama.
+
+Pastikan dokumen publik disimpan atau dibagikan melalui mekanisme yang sesuai. Jangan menjadikan seluruh Google Drive terbuka untuk publik. File yang bersifat internal tidak boleh dapat diakses tanpa otorisasi.
+
+F. Manajemen FAQ
+
+Admin dapat membuat pertanyaan, jawaban, kategori, kata kunci, sumber, tanggal verifikasi, dan urutan tampilan.
+
+Sediakan fitur menandai FAQ populer.
+
+G. Agenda Kegiatan
+
+Fitur:
+
+- Nama kegiatan.
+- Deskripsi.
+- Tanggal dan waktu.
+- Lokasi.
+- Unit penanggung jawab.
+- Gambar.
+- Status.
+- Tautan informasi.
+- Dokumentasi setelah kegiatan.
+
+Bedakan agenda yang akan datang dan arsip kegiatan yang telah selesai.
+
+H. Sistem Kontak dan Aspirasi
+
+Jika fitur aspirasi diaktifkan:
+
+- Formulir nama bersifat opsional jika sesuai kebutuhan.
+- Kategori aspirasi.
+- Subjek.
+- Isi pesan.
+- Kontak balasan opsional.
+- Persetujuan privasi.
+- Nomor tiket.
+- Status tindak lanjut.
+- Catatan petugas internal.
+- Tanggal masuk.
+- Riwayat perubahan status.
+
+Jangan meminta informasi medis, NIK, nomor kartu JKN, OTP, kata sandi, atau dokumen pribadi sensitif melalui formulir umum.
+
+Terapkan pembatasan pengiriman, perlindungan spam, dan prosedur penanganan data. Jika tidak tersedia mekanisme yang memadai, arahkan pengguna ke kanal pengaduan resmi yang telah diverifikasi.
+
+I. Dashboard Statistik
+
+Tampilkan:
+
+- Jumlah berita aktif.
+- Jumlah pengumuman aktif.
+- Jumlah dokumen publik.
+- Jumlah FAQ.
+- Jumlah banner aktif.
+- Jumlah draft.
+- Jumlah konten menunggu verifikasi.
+- Jumlah konten kedaluwarsa.
+- Jumlah aspirasi masuk apabila modul diaktifkan.
+- Distribusi konten per kategori.
+- Aktivitas pengelola.
+
+Statistik kunjungan hanya ditampilkan jika ada mekanisme pencatatan yang benar-benar diimplementasikan dan memperhatikan privasi. Jangan membuat angka kunjungan fiktif.
+
+J. Manajemen Pengguna dan Hak Akses
+
+Sediakan peran:
+
+- Super Admin.
+- Admin Konten.
+- Verifikator.
+- Editor.
+- Petugas Pengaduan jika modul aspirasi diaktifkan.
+- Viewer atau pimpinan.
+
+Hak akses:
+
+- Super Admin: pengaturan sistem, pengguna, dan seluruh modul.
+- Admin Konten: mengelola konten sesuai kewenangan.
+- Verifikator: memeriksa dan menyetujui konten.
+- Editor: membuat dan mengedit draft.
+- Petugas Pengaduan: mengelola tiket aspirasi yang diizinkan.
+- Viewer: membaca laporan tanpa mengubah data.
+
+Pemeriksaan hak akses wajib dilakukan di backend pada setiap fungsi sensitif. Menyembunyikan tombol pada frontend tidak cukup untuk melindungi data.
+
+K. Audit Log
+
+Catat:
+
+- ID aktivitas.
+- Pengguna.
+- Waktu.
+- Modul.
+- Tindakan.
+- ID data yang diubah.
+- Ringkasan perubahan.
+- Hasil tindakan.
+
+Jangan menyimpan kata sandi, OTP, token rahasia, atau isi data sensitif yang tidak diperlukan dalam audit log.
+
+L. Integrasi Kanal Resmi
+
+Sediakan tautan yang dapat dikelola admin untuk kanal resmi, termasuk:
+
+- Website nasional BPJS Kesehatan.
+- Layanan PANDAWA jika kanal dan ketentuan terbaru sudah diverifikasi.
+- Aplikasi Mobile JKN.
+- Care Center 165 jika informasi kanal dan ketersediaannya telah dikonfirmasi.
+- Kanal pengaduan resmi yang berlaku.
+- Media sosial resmi yang sudah diverifikasi.
+
+Tautan harus dapat diubah melalui dashboard. Gunakan target pembukaan yang sesuai dan atribut keamanan untuk tautan eksternal.
+
+Jangan membuat integrasi API palsu atau mengklaim bahwa website dapat memeriksa status kepesertaan secara langsung. Jika tidak ada API resmi yang berwenang, tampilkan panduan dan tautan menuju kanal yang sesuai.
+
+LOGIKA / PERHITUNGAN
+
+A. Penentuan Status Publikasi
+
+Implementasikan fungsi untuk menentukan apakah konten dapat ditampilkan.
+
+Konten hanya ditampilkan apabila:
+
+1. Statusnya `Published`.
+2. Status verifikasinya memenuhi ketentuan modul.
+3. Tanggal mulai publikasi sudah tercapai.
+4. Tanggal akhir publikasi belum lewat atau memang tidak dibatasi.
+5. Konten tidak berstatus dihapus atau diarsipkan.
+
+Gunakan waktu Asia/Jakarta secara konsisten.
+
+B. Penjadwalan Publikasi
+
+Google Apps Script tidak boleh diasumsikan menjalankan fungsi secara real-time tanpa pemicu. Buat mekanisme:
+
+- Pemeriksaan status ketika halaman publik dimuat.
+- Trigger berbasis waktu untuk memperbarui status publikasi jika diperlukan.
+- Pemeriksaan tanggal mulai dan berakhir.
+- Penanganan zona waktu.
+
+Konten terjadwal yang belum memenuhi waktu tayang tidak boleh ditampilkan di halaman publik.
+
+C. Pencarian dan Filter
+
+Implementasikan pencarian tanpa membedakan huruf besar dan kecil.
+
+Sediakan filter berdasarkan:
+
+- Kategori.
+- Tanggal.
+- Status.
+- Jenis konten.
+- Kata kunci.
+
+Normalisasi kata kunci, lakukan validasi input, dan batasi ukuran hasil pencarian.
+
+D. ID Data
+
+Gunakan ID unik yang tidak mudah bertabrakan. Untuk kebutuhan kompatibilitas Google Sheets, buat ID berbasis timestamp dengan zona waktu Asia/Jakarta dan komponen acak yang memadai.
+
+Format contoh: `NEWS-20261022103000-X7K2`
+
+Jangan mengandalkan timestamp saja karena beberapa operasi dapat terjadi pada waktu yang sama.
+
+E. Pengelolaan Upload
+
+Saat file diunggah:
+
+1. Validasi ukuran.
+2. Validasi tipe MIME dan ekstensi.
+3. Batasi jenis file berdasarkan modul.
+4. Tolak tipe berbahaya.
+5. Buat nama file yang aman.
+6. Simpan ke folder Google Drive yang sesuai.
+7. Catat metadata file di Google Sheets.
+8. Atur akses berdasarkan klasifikasi dokumen.
+9. Tangani kegagalan upload.
+10. Berikan umpan balik yang jelas kepada admin.
+
+Jangan percaya hanya pada ekstensi file yang dikirim browser.
+
+F. Statistik
+
+Hitung statistik dari data aktual yang tersedia. Gunakan caching dengan masa berlaku yang wajar untuk data publik yang sering diakses.
+
+G. Sinkronisasi dan Konsistensi
+
+Gunakan `LockService` untuk operasi tulis yang berpotensi bersamaan. Gunakan `PropertiesService` untuk konfigurasi teknis yang sesuai. Jangan menyimpan kredensial sensitif atau token rahasia di kode frontend.
+
+VALIDASI FORM
+
+Terapkan validasi pada frontend dan backend.
+
+A. Validasi Konten
+
+- Judul wajib diisi.
+- Judul memiliki batas panjang.
+- Slug harus unik.
+- Kategori harus valid.
+- Ringkasan memiliki batas karakter.
+- Isi wajib diisi untuk artikel.
+- URL harus valid dan menggunakan protokol yang diizinkan.
+- Tanggal mulai tidak boleh melewati tanggal akhir.
+- Status publikasi harus merupakan pilihan yang sah.
+- Konten yang memuat informasi kebijakan wajib memiliki sumber dan tanggal verifikasi.
+- Banner wajib memiliki teks alternatif gambar.
+
+B. Validasi Dokumen
+
+- Judul dokumen wajib.
+- Kategori wajib.
+- File wajib jika jenis konten membutuhkan lampiran.
+- Ukuran file mengikuti batas yang dapat dikonfigurasi.
+- Tipe file mengikuti daftar izin.
+- URL sumber harus valid.
+- Status akses file harus sesuai klasifikasi.
+- Dokumen internal tidak boleh otomatis dipublikasikan.
+
+C. Validasi Formulir Aspirasi
+
+- Kategori wajib.
+- Subjek wajib.
+- Pesan wajib.
+- Batas panjang pesan.
+- Validasi email atau nomor kontak jika pengguna memilih mengisinya.
+- Persetujuan privasi wajib sebelum pengiriman.
+- Proteksi spam.
+- Pembatasan pengiriman berulang.
+- Penolakan input yang melebihi batas ukuran.
+- Sanitasi input.
+- Pesan kesalahan yang mudah dipahami.
+
+D. Validasi Keamanan
+
+- Validasi hak akses di server.
+- Sanitasi output untuk mencegah XSS.
+- Gunakan teknik pengamanan yang sesuai terhadap CSRF dan penyalahgunaan endpoint.
+- Batasi operasi berdasarkan peran.
+- Jangan menggunakan `eval()` untuk memproses konten.
+- Jangan menganggap ID data yang diterima dari browser sebagai bukti otorisasi.
+- Jangan menampilkan pesan kesalahan internal atau stack trace kepada pengunjung.
+
+UX ENHANCEMENT
+
+A. Responsif
+
+Pastikan seluruh halaman berfungsi pada:
+
+- Desktop.
+- Laptop.
+- Tablet.
+- Smartphone Android.
+- iPhone.
+
+Gunakan pendekatan mobile-first. Navigasi, formulir, tabel, carousel, dan dashboard harus tetap nyaman digunakan pada layar kecil.
+
+B. Loading State
+
+Gunakan:
+
+- Skeleton loading untuk daftar berita.
+- Spinner saat permintaan berlangsung.
+- Indikator proses upload.
+- Status pengiriman formulir.
+- Pencegahan klik ganda saat penyimpanan.
+
+C. Empty State
+
+Jika tidak ada data, tampilkan pesan yang jelas, misalnya: “Belum ada informasi yang tersedia pada kategori ini.”
+
+Sertakan tombol untuk kembali ke kategori lain atau menghapus filter.
+
+D. Feedback Pengguna
+
+Sediakan notifikasi:
+
+- Berhasil disimpan.
+- Berhasil diperbarui.
+- Berhasil dihapus.
+- Gagal memuat data.
+- File tidak valid.
+- Koneksi bermasalah.
+- Konten belum tersedia.
+- Informasi sudah tidak berlaku.
+
+Gunakan toast atau alert yang tidak mengganggu.
+
+E. Navigasi
+
+- Breadcrumb pada halaman detail.
+- Menu aktif sesuai halaman.
+- Pagination.
+- Tombol kembali ke atas.
+- Pencarian global.
+- Tautan terkait.
+- Footer konsisten.
+- URL atau parameter navigasi yang dapat membuka halaman dan artikel tertentu.
+- Penanganan parameter tidak valid.
+
+F. Aksesibilitas
+
+- Gunakan HTML semantik.
+- Kontras warna yang baik.
+- Alt text untuk gambar.
+- Label pada formulir.
+- Dukungan keyboard.
+- Fokus yang terlihat.
+- ARIA hanya jika diperlukan.
+- Ukuran target sentuh yang memadai.
+- Hindari animasi berlebihan.
+- Sediakan tombol atau mekanisme untuk mengurangi gerakan animasi.
+
+G. SEO dan Metadata
+
+Implementasikan:
+
+- Judul halaman dinamis.
+- Meta description.
+- Canonical URL jika dapat ditentukan.
+- Open Graph untuk berita.
+- URL slug yang konsisten.
+- Structured data yang sesuai dan faktual.
+- Sitemap atau indeks konten jika didukung oleh arsitektur deployment.
+- Halaman 404 yang ramah pengguna.
+
+Jangan mengarang data terstruktur untuk rating, alamat, atau organisasi.
+
+H. Kinerja
+
+- Minimalkan library eksternal.
+- Hindari pemanggilan backend berulang yang tidak diperlukan.
+- Gunakan pagination di sisi server untuk data besar.
+- Gunakan caching untuk konten publik yang sering diakses.
+- Kompres dan optimalkan gambar.
+- Muat gambar secara lazy loading.
+- Pisahkan data publik dan data admin.
+- Hindari membaca seluruh spreadsheet pada setiap permintaan.
+- Hindari mengirim data internal ke frontend publik.
+
+I. Pengalaman Administrator
+
+Buat dashboard dengan:
+
+- Sidebar navigasi.
+- Header akun.
+- Breadcrumb.
+- Statistik ringkas.
+- Tabel data yang mudah dibaca.
+- Formulir dalam modal atau halaman khusus.
+- Filter status.
+- Pencarian.
+- Pagination.
+- Konfirmasi tindakan berisiko.
+- Pratinjau konten.
+- Riwayat perubahan.
+- Tampilan responsif.
+
+J. Fitur Bantuan Informasi
+
+Tambahkan pusat bantuan berbasis pencarian FAQ dan artikel terkait.
+
+Jika menambahkan chatbot, gunakan hanya informasi yang telah diverifikasi dan sumber resmi. Chatbot harus menyatakan keterbatasan ketika tidak menemukan jawaban. Jangan membuat keputusan administratif, memastikan status peserta, atau memberikan interpretasi kebijakan yang tidak didukung sumber resmi.
+
+K. Privasi dan Keamanan
+
+- Terapkan prinsip minimisasi data.
+- Pisahkan akses publik dan administratif.
+- Gunakan akun Google yang diotorisasi.
+- Validasi identitas dan peran pada setiap operasi administratif.
+- Jangan mempublikasikan data pribadi dari Google Sheets.
+- Jangan menampilkan spreadsheet atau folder Drive internal kepada pengunjung.
+- Sediakan kebijakan privasi yang dapat dikelola administrator.
+- Tetapkan masa retensi data aspirasi dan audit log sesuai kebijakan yang berlaku.
+- Jangan menyimpan data sensitif yang tidak diperlukan.
+- Terapkan penanganan kesalahan dan pencatatan aktivitas yang aman.
+- Dokumentasikan keterbatasan keamanan Google Apps Script, terutama terkait autentikasi, deployment, dan akses file.
+
+STRUKTUR KODE
+
+A. Konfigurasi
+
+Buat `Config.gs` untuk:
+
+- ID spreadsheet.
+- ID folder Drive.
+- Nama sheet.
+- Zona waktu.
+- Batas ukuran file.
+- Daftar tipe file yang diizinkan.
+- Daftar peran.
+- Parameter caching.
+- Konfigurasi kanal resmi.
+- Konfigurasi aplikasi.
+
+Nilai konfigurasi sensitif harus berada di server. Jangan mengirim seluruh objek konfigurasi ke browser.
+
+B. Database
+
+Buat `Database.gs` berisi fungsi generik:
+
+- `getSheet(name)`
+- `ensureSheet(name, headers)`
+- `getRecords(name, options)`
+- `getRecordById(name, id)`
+- `insertRecord(name, record)`
+- `updateRecord(name, id, changes)`
+- `softDeleteRecord(name, id)`
+- `generateUniqueId(prefix)`
+- `getNextSequence(name)` jika diperlukan.
+
+Gunakan pemetaan header yang konsisten. Hindari ketergantungan terhadap nomor kolom yang mudah berubah.
+
+C. Backend Publik
+
+Buat `PublicService.gs` untuk:
+
+- `getHomeData()`
+- `getPublishedBanners()`
+- `getActiveAnnouncements()`
+- `getLatestNews(options)`
+- `getNewsDetail(slug)`
+- `getPublishedServices(options)`
+- `getPublishedFaq(options)`
+- `getPublishedDocuments(options)`
+- `getPublishedEvents(options)`
+- `searchPublicContent(query, options)`
+- `getPublicSettings()`
+
+Semua fungsi publik wajib menyaring data yang boleh dipublikasikan.
+
+D. Backend Admin
+
+Buat `AdminService.gs` untuk:
+
+- `getDashboardStats()`
+- `listContent(module, options)`
+- `createContent(module, payload)`
+- `updateContent(module, id, payload)`
+- `deleteContent(module, id)`
+- `publishContent(module, id)`
+- `archiveContent(module, id)`
+- `getAuditLogs(options)`
+- `getAdminSettings()`
+
+Setiap fungsi yang mengubah data wajib memeriksa identitas dan kewenangan pengguna di sisi server, memvalidasi payload, mencatat audit log, dan menangani kegagalan dengan aman.
+
+E. Autentikasi
+
+Buat `Auth.gs` untuk pemeriksaan akses administrator.
+
+Gunakan mekanisme identitas Google yang benar-benar didukung oleh konfigurasi deployment. Jangan mengandalkan `Session.getActiveUser().getEmail()` selalu menghasilkan email karena perilakunya bergantung pada konteks deployment dan kebijakan akun.
+
+Jika verifikasi identitas tidak dapat dilakukan dengan andal, tolak operasi administratif dan tampilkan instruksi konfigurasi yang jelas. Jangan mengganti autentikasi dengan PIN statis di frontend.
+
+F. Upload
+
+Buat `UploadService.gs` untuk:
+
+- Validasi file.
+- Pembuatan nama file.
+- Penyimpanan file.
+- Pembuatan metadata.
+- Pengaturan akses.
+- Penghapusan atau pengarsipan file sesuai kebijakan.
+- Penanganan kesalahan.
+
+G. Validasi
+
+Buat `Validation.gs` untuk:
+
+- `validateNews(payload)`
+- `validateAnnouncement(payload)`
+- `validateBanner(payload)`
+- `validateDocument(payload)`
+- `validateService(payload)`
+- `validateFaq(payload)`
+- `validateEvent(payload)`
+- `validateExternalUrl(url)`
+- `sanitizePlainText(value)`
+- `validatePagination(options)`
+
+Gunakan whitelist untuk modul dan properti yang dapat diperbarui. Jangan menerima nama sheet atau fungsi backend secara bebas dari browser.
+
+H. Frontend
+
+Buat `Index.html` sebagai entry point halaman publik.
+
+Buat `Styles.html` untuk CSS global, komponen, responsivitas, dan animasi.
+
+Buat `Scripts.html` untuk pengelolaan state sederhana, navigasi, pemanggilan server, pencarian, filter, dan event handler.
+
+Buat `Components.html` untuk komponen yang digunakan berulang, jika sesuai dengan implementasi HTML Service.
+
+Buat `Admin.html`, `AdminStyles.html`, dan `AdminScripts.html` untuk dashboard pengelola.
+
+Gunakan fungsi `include(filename)` pada template Apps Script jika diperlukan untuk memasukkan file HTML tambahan.
+
+I. Entry Point
+
+Buat `doGet(e)` yang:
+
+- Menentukan halaman berdasarkan parameter yang diizinkan.
+- Menampilkan halaman publik atau admin sesuai rute.
+- Mengatur judul halaman.
+- Mengatur viewport.
+- Menghindari pemilihan file template secara bebas berdasarkan input pengguna.
+- Mengembalikan halaman yang aman untuk parameter tidak valid.
+
+Sediakan fungsi setup yang idempoten, misalnya `setupApplication()`, untuk membuat struktur sheet dan folder yang diperlukan tanpa menggandakan data setiap kali dijalankan.
+
+J. Google Sheets
+
+Siapkan struktur sheet berikut:
+
+1\. `Settings`
+
+- key
+- value
+- description
+- updatedAt
+- updatedBy
+
+2\. `Users`
+
+- id
+- email
+- displayName
+- role
+- status
+- createdAt
+- updatedAt
+
+3\. `Banners`
+
+- id
+- title
+- subtitle
+- category
+- imageUrl
+- imageFileId
+- altText
+- ctaLabel
+- ctaUrl
+- sortOrder
+- status
+- verificationStatus
+- startAt
+- endAt
+- createdAt
+- updatedAt
+- createdBy
+- updatedBy
+
+4\. `News`
+
+- id
+- title
+- slug
+- category
+- excerpt
+- content
+- thumbnailUrl
+- thumbnailFileId
+- author
+- sourceUrl
+- verificationStatus
+- verifiedAt
+- publishedAt
+- startAt
+- endAt
+- status
+- createdAt
+- updatedAt
+- createdBy
+- updatedBy
+
+5\. `Announcements`
+
+- id
+- title
+- message
+- category
+- priority
+- targetUrl
+- startAt
+- endAt
+- status
+- verificationStatus
+- createdAt
+- updatedAt
+- createdBy
+- updatedBy
+
+6\. `Services`
+
+- id
+- title
+- slug
+- category
+- description
+- requirements
+- procedure
+- channels
+- officialSource
+- sourceUrl
+- verificationStatus
+- verifiedAt
+- status
+- updatedAt
+- updatedBy
+
+7\. `FAQs`
+
+- id
+- question
+- answer
+- category
+- keywords
+- sourceUrl
+- verificationStatus
+- verifiedAt
+- sortOrder
+- status
+- updatedAt
+- updatedBy
+
+8\. `Documents`
+
+- id
+- title
+- description
+- category
+- fileId
+- fileUrl
+- mimeType
+- fileSize
+- sourceUrl
+- documentDate
+- version
+- verificationStatus
+- status
+- createdAt
+- updatedAt
+- createdBy
+- updatedBy
+
+9\. `Events`
+
+- id
+- title
+- description
+- location
+- startAt
+- endAt
+- category
+- imageUrl
+- sourceUrl
+- status
+- createdAt
+- updatedAt
+
+10\. `Categories`
+
+- id
+- module
+- name
+- slug
+- sortOrder
+- status
+
+11\. `AuditLogs`
+
+- id
+- actorEmail
+- action
+- module
+- recordId
+- summary
+- timestamp
+- result
+
+12\. `Feedback`
+
+- id
+- ticketNumber
+- category
+- subject
+- message
+- contact
+- consent
+- status
+- assignedTo
+- internalNotes
+- createdAt
+- updatedAt
+
+13\. `Media`
+
+- id
+- fileName
+- fileId
+- mimeType
+- fileSize
+- module
+- altText
+- accessLevel
+- uploadedBy
+- uploadedAt
+- status
+
+14\. `ActivityLogs`
+
+- id
+- actorEmail
+- activityType
+- module
+- timestamp
+- result
+
+Tambahkan kolom bila diperlukan. Seluruh struktur harus konsisten dengan fungsi CRUD yang diimplementasikan.
+
+K. Penanganan Error
+
+Gunakan format respons backend yang konsisten, misalnya:
+
+- `success`
+- `data`
+- `message`
+- `code`
+
+Jangan mengembalikan objek exception mentah ke browser. Catat rincian teknis di log server tanpa membocorkan informasi sensitif.
+
+L. Dokumentasi Kode
+
+Berikan komentar pada fungsi penting, dokumentasikan parameter dan nilai kembalian, jelaskan dependensi, serta sediakan instruksi konfigurasi yang diperlukan di dalam komentar kode atau dokumentasi proyek.
+
+FITUR PREMIUM (OPSIONAL UPGRADE)
+
+Implementasikan arsitektur yang memungkinkan penambahan fitur berikut tanpa harus membangun ulang aplikasi.
+
+1\. AI Information Assistant
+
+Asisten informasi yang menjawab pertanyaan berdasarkan artikel dan dokumen resmi yang sudah diverifikasi.
+
+Persyaratan:
+
+- Gunakan sumber resmi yang dapat dilacak.
+- Tampilkan referensi artikel.
+- Beri penanda ketika jawaban tidak pasti.
+- Jangan mengarang regulasi atau prosedur.
+- Jangan memproses data pribadi peserta yang tidak diperlukan.
+- Jangan menanam API key pada frontend.
+- Jika integrasi AI belum dikonfigurasi, tampilkan FAQ dan pencarian biasa sebagai fallback.
+
+2\. Analitik Konten
+
+- Statistik artikel populer.
+- Pencarian populer.
+- Kategori paling sering diakses jika data tersedia.
+- Perbandingan publikasi per bulan.
+- Laporan konten yang perlu diperbarui.
+
+3\. Reminder Verifikasi Konten
+
+- Daftar artikel yang mendekati masa tinjau ulang.
+- Notifikasi kepada pengelola yang dikonfigurasi.
+- Penanda dokumen yang berpotensi kedaluwarsa.
+- Riwayat tindak lanjut.
+
+4\. Newsletter atau Informasi Berkala
+
+Jika diaktifkan, sediakan formulir berlangganan dengan persetujuan eksplisit, mekanisme berhenti berlangganan, dan perlindungan data.
+
+5\. Multibahasa
+
+Dukungan Bahasa Indonesia sebagai bahasa utama serta Bahasa Inggris sebagai opsi tambahan.
+
+6\. Integrasi Kalender
+
+Ekspor agenda yang telah dipublikasikan ke format kalender jika dibutuhkan.
+
+7\. Laporan Pengelolaan
+
+- Rekap publikasi.
+- Rekap konten terverifikasi.
+- Daftar dokumen.
+- Laporan aktivitas admin.
+- Ekspor CSV atau Excel yang kompatibel.
+- Ekspor PDF untuk laporan formal.
+
+8\. Pusat Pembaruan Regulasi
+
+Sediakan daftar regulasi dan informasi yang perlu diperiksa ulang secara berkala. Jangan mengklaim pemantauan otomatis terhadap situs pemerintah tanpa integrasi yang benar-benar berfungsi.
+
+9\. Integrasi Google Workspace
+
+Manfaatkan Google Sheets, Drive, dan Apps Script secara efisien. Jika memerlukan notifikasi email, gunakan MailApp atau layanan yang tersedia sesuai kuota dan kebijakan akun.
+
+10\. Workflow Persetujuan
+
+Buat alur Editor → Verifikator → Publikasi. Simpan catatan revisi dan identitas pengguna yang melakukan persetujuan.
+
+OUTPUT AKHIR YANG DIMINTA
+
+Hasilkan proyek website BPJS Kesehatan Madiun yang lengkap, konsisten, siap diuji, dan dapat dipasang melalui Google Apps Script.
+
+Wajib menghasilkan:
+
+1. Source code seluruh file `.gs` dan `.html` yang dibutuhkan.
+2. Frontend halaman publik yang responsif dan interaktif.
+3. Dashboard administrator yang terpisah dari halaman publik.
+4. Backend CRUD untuk semua modul inti.
+5. Struktur database Google Sheets yang konsisten.
+6. Mekanisme upload dokumen dan gambar ke Google Drive.
+7. Validasi input di frontend dan backend.
+8. Pemeriksaan autentikasi dan otorisasi admin di server.
+9. Sistem publikasi dan verifikasi konten.
+10. Pencarian global, filter, pagination, dan halaman detail.
+11. Dashboard statistik berbasis data aktual.
+12. Audit log untuk operasi penting.
+13. Data demonstrasi yang secara jelas diberi label sebagai data contoh dan tidak menyesatkan masyarakat.
+14. Penanganan loading, empty state, dan error.
+15. Integrasi tautan kanal resmi yang dapat dikonfigurasi.
+16. Panduan konfigurasi deployment Google Apps Script.
+17. Petunjuk pembuatan spreadsheet dan folder Drive.
+18. Petunjuk menjalankan fungsi `setupApplication()`.
+19. Daftar izin OAuth yang diperlukan dan alasan penggunaannya.
+20. Langkah pengujian akses publik dan administrator.
+21. Checklist pengujian CRUD, upload, publikasi, pencarian, keamanan, dan responsivitas.
+22. Catatan batas kuota Google Apps Script, Google Sheets, dan Google Drive.
+23. Panduan pemeliharaan, pencadangan, dan pemulihan data.
+
+KRITERIA PENERIMAAN
+
+Aplikasi dinyatakan selesai apabila:
+
+- Halaman beranda dapat dibuka tanpa error.
+- Navigasi bekerja pada desktop dan mobile.
+- Banner dan pengumuman hanya menampilkan konten yang memenuhi syarat publikasi.
+- Berita dan dokumen dapat dicari dan dibuka.
+- Dashboard admin terlindungi oleh pemeriksaan otorisasi di server.
+- Pengguna yang tidak berwenang tidak dapat menjalankan operasi administratif melalui pemanggilan backend langsung.
+- Admin dapat menambah, mengubah, menerbitkan, mengarsipkan, dan menghapus secara aman sesuai kewenangan.
+- Upload file divalidasi dan mengikuti aturan akses.
+- Perubahan penting tercatat dalam audit log.
+- Seluruh data yang tampil pada dashboard statistik berasal dari data aktual.
+- Informasi kantor yang belum terverifikasi tidak ditampilkan sebagai fakta.
+- Tautan kanal resmi dapat dikonfigurasi dan tidak mengarah ke URL rekaan.
+- Tidak terdapat tombol atau fitur yang hanya bersifat dekoratif.
+- Seluruh operasi memiliki umpan balik yang jelas.
+- Tidak terdapat API palsu, data kepesertaan rekaan, atau klaim integrasi yang belum diimplementasikan.
+- Kode terstruktur, modular, memiliki komentar, dan dapat dipelihara.
+
+PRIORITAS IMPLEMENTASI
+
+Tahap 1 — MVP wajib berfungsi:
+
+- Beranda.
+- Header dan navigasi.
+- Hero carousel.
+- Pengumuman.
+- Berita.
+- Informasi layanan.
+- FAQ.
+- Dokumen unduhan.
+- Pencarian global.
+- CMS administrator.
+- Google Sheets sebagai database.
+- Google Drive untuk file.
+- Autentikasi dan otorisasi administrator.
+- Validasi, logging, dan deployment Google Apps Script.
+
+Tahap 2 — Profesional:
+
+- Profil kantor lengkap.
+- Agenda kegiatan.
+- Galeri.
+- Workflow persetujuan.
+- Audit log terperinci.
+- Dashboard statistik.
+- Ekspor laporan.
+- Pengingat verifikasi.
+- Analitik konten.
+
+Tahap 3 — Premium:
+
+- Asisten informasi berbasis sumber resmi.
+- Multibahasa.
+- Analitik lanjutan.
+- Integrasi tambahan sesuai izin dan ketersediaan API.
+
+Mulai dengan menghasilkan seluruh source code yang benar-benar terhubung satu sama lain. Jangan hanya menghasilkan mockup, wireframe, atau tampilan frontend statis. Semua tombol utama harus menjalankan fungsi yang sesuai, seluruh modul inti harus terhubung ke backend, dan seluruh fungsi administratif harus melewati validasi serta otorisasi di server.
+
+Pastikan implementasi realistis terhadap batas Google Apps Script, aman untuk penggunaan institusional, dan mudah dikembangkan oleh pengelola teknologi informasi kantor BPJS Kesehatan Madiun.

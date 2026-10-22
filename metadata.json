@@ -1,0 +1,6 @@
+{
+  "name": "BPJS Kesehatan Madiun Information Center",
+  "description": "Portal Informasi Resmi, Layanan Terpadu, dan Edukasi Peserta JKN Kantor Cabang Madiun berbasis Web & Google Apps Script",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
